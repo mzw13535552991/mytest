@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.MemberDAO">
+
+    <resultMap type="com.bean.Member" id="BaseResultMap">
+      <id column="id" property="id" jdbcType="INTEGER"/>
+      <result column="uname" property="uname" jdbcType="VARCHAR"/>
+      <result column="upass" property="upass" jdbcType="VARCHAR"/>
+      <result column="tname" property="tname" jdbcType="VARCHAR"/>
+      <result column="tel" property="tel" jdbcType="VARCHAR"/>
+      <result column="email" property="email" jdbcType="VARCHAR"/>
+      <result column="filename" property="filename" jdbcType="VARCHAR"/>
+      <result column="delstatus" property="delstatus" jdbcType="VARCHAR"/>
+      <result column="isjy" property="isjy" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <insert id="add" parameterType="com.bean.Member">
+	  insert into member values(null,#{uname},#{upass},#{tname},#{tel},#{email},#{filename},#{delstatus},#{isjy})
+	</insert>
+    
+    <update id="update" parameterType="com.bean.Member">
+	  update member
+	  <set>
+	    <if test="upass!=null and upass!=''">
+	       upass=#{upass},
+	    </if>
+	    <if test="tname!=null and tname!=''">
+	       tname=#{tname},
+	    </if>
+	    <if test="tel!=null and tel!=''">
+	       tel=#{tel},
+	    </if>
+	    <if test="email!=null and email!=''">
+	       email=#{email},
+	    </if>
+	    <if test="delstatus!=null and delstatus!=''">
+	       delstatus=#{delstatus},
+	    </if>
+	    <if test="filename!=null and filename!=''">
+	       filename=#{filename},
+	    </if>
+	    <if test="isjy!=null and isjy!=''">
+	       isjy=#{isjy},
+	    </if>
+	  </set>
+	  where id=#{id}
+	</update>
+    
+    
+    <select id="selectAll" parameterType="HashMap" resultMap="BaseResultMap">
+      select * from member where 1=1 and delstatus=0
+      <if test="key!=null and key!=''">
+        and (uname like "%"#{key}"%" or tname like "%"#{key}"%")
+      </if>
+      <if test="uname!=null and uname!=''">
+        and uname=#{uname}
+      </if>
+      <if test="upass!=null and upass!=''">
+        and upass=#{upass}
+      </if>
+      <if test="isjy!=null and isjy!=''">
+        and isjy=#{isjy}
+      </if>
+      order by id desc
+    </select>
+
+	<select id="findById" resultType="com.bean.Member" parameterType="int">
+		select * from member where id=#{id}
+	</select>
+	
+	
+</mapper>
+

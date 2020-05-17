@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.KechenDAO">
+    <resultMap type="com.bean.Kechen" id="BaseResultMap">
+      <id column="id" property="id" jdbcType="INTEGER"/>
+      <result column="kcname" property="kcname" jdbcType="VARCHAR"/>
+      <result column="categoryid" property="categoryid" jdbcType="VARCHAR"/>
+      <result column="filename" property="filename" jdbcType="VARCHAR"/>
+      <result column="vfilename" property="vfilename" jdbcType="VARCHAR"/>
+      <result column="content" property="content" jdbcType="VARCHAR"/>
+      <result column="istj" property="istj" jdbcType="VARCHAR"/>
+      <result column="delstatus" property="delstatus" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <update id="update" parameterType="com.bean.Kechen">
+      update Kechen
+      <set>
+        <if test="kcname!=null and kcname!=''">kcname=#{kcname},</if>
+        <if test="categoryid!=null and categoryid!=''">categoryid=#{categoryid},</if>
+        <if test="filename!=null and filename!=''">filename=#{filename},</if>
+        <if test="vfilename!=null and vfilename!=''">vfilename=#{vfilename},</if>
+        <if test="content!=null and content!=''">content=#{content},</if>
+        <if test="istj!=null and istj!=''">istj=#{istj},</if>
+        <if test="delstatus!=null and delstatus!=''">delstatus=#{delstatus},</if>
+      </set>
+      where id=#{id}
+    </update>
+    
+     <insert id="add" parameterType="com.bean.Kechen">
+      insert into Kechen values(null,#{kcname},#{categoryid},#{filename},#{vfilename},#{content},#{istj},#{delstatus})
+    </insert>
+    
+    <select id="selectAll" parameterType="HashMap" resultMap="BaseResultMap">
+      select * from Kechen where 1=1 and delstatus=0
+      <if test="key!=null and key!=''">
+        and kcname like "%"#{key}"%"
+      </if>
+      <if test="categoryid!=null and categoryid!=''">
+        and categoryid=#{categoryid}
+      </if>
+      <if test="istj!=null and istj!=''">
+        and istj=#{istj}
+      </if>
+      order by id desc
+    </select>
+    
+    
+    
+    <select id="findById" parameterType="com.bean.Kechen" resultType="com.bean.Kechen">
+      select * from Kechen where id=#{id}
+    </select>
+    
+    
+    
+	
+</mapper>
+

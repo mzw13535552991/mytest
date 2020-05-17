@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.TzhfDAO">
+    <resultMap type="com.bean.Tzhf" id="BaseResultMap">
+      <id column="id" property="id" jdbcType="INTEGER"/>
+      <result column="tzid" property="tzid" jdbcType="VARCHAR"/>
+      <result column="content" property="content" jdbcType="VARCHAR"/>
+      <result column="hfcontent" property="hfcontent" jdbcType="VARCHAR"/>
+      <result column="savetime" property="savetime" jdbcType="VARCHAR"/>
+      <result column="memberid" property="memberid" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <insert id="add" parameterType="com.bean.Tzhf">
+      insert into tzhf values(null,#{tzid},#{content},#{hfcontent},#{savetime},#{memberid})
+    </insert>
+    
+    <select id="selectAll" parameterType="HashMap" resultMap="BaseResultMap">
+      select * from tzhf where 1=1 
+      <if test="tzid!=null and tzid!=''">
+        and tzid=#{tzid}
+      </if>
+      order by id desc
+    </select>
+    
+    
+    <select id="findById" parameterType="com.bean.Tzhf" resultType="com.bean.Tzhf">
+      select * from tzhf where id=#{id}
+    </select>
+    
+    <delete id="delete" parameterType="int">
+     delete from tzhf where id=#{id}
+    </delete>
+    
+    <update id="update" parameterType="com.bean.Tzhf">
+      update tzhf 
+      <set>
+        <if test="hfcontent!=null and hfcontent!=''">
+          hfcontent=#{hfcontent}
+        </if>
+      </set>
+      where id=#{id}
+    </update>
+    
+    
+	
+</mapper>
+

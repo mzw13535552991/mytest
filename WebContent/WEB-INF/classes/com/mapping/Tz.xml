@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.TzDAO">
+    <resultMap type="com.bean.Tz" id="BaseResultMap">
+      <id column="id" property="id" jdbcType="INTEGER"/>
+      <result column="title" property="title" jdbcType="VARCHAR"/>
+      <result column="delstatus" property="delstatus" jdbcType="VARCHAR"/>
+      <result column="memberid" property="memberid" jdbcType="VARCHAR"/>
+      <result column="savetime" property="savetime" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <insert id="add" parameterType="com.bean.Tz">
+      insert into tz values(null,#{title},#{delstatus},#{memberid},#{savetime})
+    </insert>
+    
+    <select id="selectAll" parameterType="HashMap" resultMap="BaseResultMap">
+      select * from tz where 1=1 and delstatus=0
+      <if test="key!=null and key!=''">
+        and memberid in (select id from member where uname like "%"#{key}"%")
+      </if>
+      order by id desc
+    </select>
+    
+    
+    <select id="findById" parameterType="com.bean.Tz" resultType="com.bean.Tz">
+      select * from tz where id=#{id}
+    </select>
+    
+    <update id="delete" parameterType="com.bean.Tz">
+      update tz set delstatus=1 where id=#{id}
+    </update>
+    
+    
+	
+</mapper>
+

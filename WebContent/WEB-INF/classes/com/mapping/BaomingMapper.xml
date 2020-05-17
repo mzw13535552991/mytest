@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.BaomingDAO">
+    <resultMap type="com.bean.Baoming" id="BaseResultMap">
+      <id column="id" property="id" jdbcType="INTEGER"/>
+      <result column="stid" property="stid" jdbcType="VARCHAR"/>
+      <result column="kcid" property="kcid" jdbcType="VARCHAR"/>
+      <result column="savetime" property="savetime" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+     <insert id="add" parameterType="com.bean.Baoming">
+      insert into Baoming values(null,#{stid},#{kcid},#{savetime})
+    </insert>
+    
+    <select id="selectAll" parameterType="HashMap" resultMap="BaseResultMap">
+      select * from Baoming where 1=1 
+      <if test="key!=null and key!=''">
+        and stid in (select id from member where tname like "%"#{key}"%") 
+      </if>
+      <if test="stid!=null and stid!=''">
+        and stid=#{stid}
+      </if>
+      <if test="kcid!=null and kcid!=''">
+        and kcid=#{kcid}
+      </if>
+      order by id desc
+    </select>
+    
+    
+    <delete id="delete" parameterType="Int">
+      delete from Baoming where id=#{id}
+    </delete>
+    
+    
+	
+</mapper>
+

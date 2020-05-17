@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.PinlunDAO">
+    <resultMap type="com.bean.Pinlun" id="BaseResultMap">
+      <id column="id" property="id" jdbcType="INTEGER"/>
+      <result column="stid" property="stid" jdbcType="VARCHAR"/>
+      <result column="kcid" property="kcid" jdbcType="VARCHAR"/>
+      <result column="content" property="content" jdbcType="VARCHAR"/>
+      <result column="savetime" property="savetime" jdbcType="VARCHAR"/>
+      <result column="hfcontent" property="hfcontent" jdbcType="VARCHAR"/>
+      <result column="flag" property="flag" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <select id="selectAll" parameterType="hashmap" resultMap="BaseResultMap">
+      select * from pinlun where 1=1 
+      <if test="key!=null and key!=''">
+        and stid in (select id from member where 1=1 and (uname like "%"#{key}"%" or tname like "%"#{key}"%"))
+      </if>
+      <if test="stid!=null and stid!=''">
+        and stid=#{stid}
+      </if>
+      <if test="kcid!=null and kcid!=''">
+        and kcid=#{kcid}
+      </if>
+      <if test="flag!=null and flag!=''">
+        and flag=#{flag}
+      </if>
+      order by id desc
+    </select>
+    
+    <insert id="add" parameterType="com.bean.Pinlun">
+      insert into pinlun values(null,#{stid},#{kcid},#{content},#{savetime},#{hfcontent},#{flag})
+    </insert>
+    
+    <delete id="delete" parameterType="int">
+      delete from pinlun where id=#{id}
+    </delete>
+    
+    <select id="findById" parameterType="int" resultType="com.bean.Pinlun">
+      select * from pinlun where id=#{id}
+    </select>
+    
+    <update id="update" parameterType="com.bean.Pinlun">
+      update pinlun 
+      <set>
+        <if test="hfcontent!=null and hfcontent!=''">
+        hfcontent=#{hfcontent}
+        </if>
+      </set>
+      where id=#{id}
+    </update>
+    
+	
+</mapper>
+

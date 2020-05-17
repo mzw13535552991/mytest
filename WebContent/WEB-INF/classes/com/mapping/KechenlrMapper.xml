@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.KechenlrDAO">
+    <resultMap type="com.bean.Kechenlr" id="BaseResultMap">
+      <id column="id" property="id" jdbcType="INTEGER"/>
+      <result column="kcid" property="kcid" jdbcType="VARCHAR"/>
+      <result column="title" property="title" jdbcType="VARCHAR"/>
+      <result column="filename" property="filename" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <delete id="delete" parameterType="Int">
+      delete from kechenlr where id=#{id}
+    </delete>
+    
+    <update id="update" parameterType="com.bean.Kechenlr">
+      update Kechenlr
+      <set>
+        <if test="title!=null and title!=''"> title=#{title},</if>
+        <if test="filename!=null and filename!=''"> filename=#{filename},</if>
+      </set>
+      where id=#{id}
+    </update>
+    
+    <insert id="add" parameterType="com.bean.Kechenlr">
+      insert into Kechenlr values(null,#{kcid},#{title},#{filename})
+    </insert>
+    
+    <select id="selectAll" parameterType="HashMap" resultMap="BaseResultMap">
+      select * from Kechenlr where 1=1
+      <if test="key!=null and key!=''">
+        and title  like "%"#{key}"%"
+      </if>
+      <if test="kcid!=null and kcid!=''">
+        and kcid=#{kcid}
+      </if>
+      <choose>
+        <when test="px!=null and px!=''">
+        order by id asc
+        </when>
+        <otherwise>
+        order by id desc
+        </otherwise>
+      </choose>
+    </select>
+    
+    <select id="findById" parameterType="com.bean.Kechenlr" resultType="com.bean.Kechenlr">
+      select * from Kechenlr where id=#{id}
+    </select>
+    
+    
+    
+	
+</mapper>
+

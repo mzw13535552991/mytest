@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.MessageDAO">
+    <resultMap type="com.bean.Message" id="BaseResultMap">
+      <id column="id" property="id" jdbcType="INTEGER"/>
+      <result column="memberid" property="memberid" jdbcType="VARCHAR"/>
+      <result column="content" property="content" jdbcType="VARCHAR"/>
+      <result column="savetime" property="savetime" jdbcType="VARCHAR"/>
+      <result column="hfcontent" property="hfcontent" jdbcType="VARCHAR"/>
+      <result column="hfsavetime" property="hfsavetime" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <update id="update" parameterType="com.bean.Message">
+      update Message
+      <set>
+        <if test="hfcontent!=null and hfcontent!=''">
+          hfcontent=#{hfcontent},
+        </if>
+        <if test="hfsavetime!=null and hfsavetime!=''">
+          hfsavetime=#{hfsavetime},
+        </if>
+      </set>
+      where id=#{id}
+    </update>
+    
+    <insert id="add" parameterType="com.bean.Message">
+      insert into Message values(null,#{memberid},#{content},#{savetime},#{hfcontent},#{hfsavetime})
+    </insert>
+    
+    <select id="selectAll" parameterType="HashMap" resultMap="BaseResultMap">
+      select * from Message where 1=1
+      <if test="key!=null and key!=''">
+        and memberid  in(select id from member where tname like "%"#{key}"%") 
+      </if>
+      order by id desc
+    </select>
+    
+    
+    
+    <select id="findById" parameterType="com.bean.Message" resultType="com.bean.Message">
+      select * from Message where id=#{id}
+    </select>
+    
+    <delete id="delete" parameterType="int">
+      delete from message where id=#{id}
+    </delete>
+    
+    
+	
+</mapper>
+

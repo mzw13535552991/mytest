@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.MovieDAO">
+    <resultMap type="com.bean.Movie" id="BaseResultMap">
+      <id column="id" property="id" jdbcType="INTEGER"/>
+      <result column="name" property="name" jdbcType="VARCHAR"/>
+      <result column="filename" property="filename" jdbcType="VARCHAR"/>
+      <result column="videoname" property="videoname" jdbcType="VARCHAR"/>
+      <result column="content" property="content" jdbcType="VARCHAR"/>
+      <result column="savetime" property="savetime" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+     <insert id="add" parameterType="movie">
+      insert into movie values(null,#{name},#{filename},#{videoname},#{content},#{savetime})
+    </insert>
+    
+    <select id="selectAll" parameterType="HashMap" resultMap="BaseResultMap">
+      select * from movie where 1=1 
+      <if test="key!=null and key!=''">
+         and name like "%"#{key}"%"
+      </if>
+      
+      order by id desc
+    </select>
+    
+    <select id="findById" parameterType="Int" resultType="movie">
+      select * from movie where id=#{id}
+    </select>
+    
+    <update id="update" parameterType="Int">
+      update movie
+      <set>
+        <if test="name!=null and name!=''">
+          name=#{name},
+        </if>
+        <if test="filename!=null and filename!=''">
+          filename=#{filename},
+        </if>
+        <if test="videoname!=null and videoname!=''">
+          videoname=#{videoname},
+        </if>
+        <if test="content!=null and content!=''">
+          content=#{content},
+        </if>
+       
+      </set>
+        where id=#{id}
+    </update>
+    
+    
+    <delete id="delete" parameterType="int">
+      delete from movie where id=#{id}
+    </delete>
+	
+</mapper>
+
